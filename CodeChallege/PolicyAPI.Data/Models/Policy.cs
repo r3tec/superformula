@@ -23,7 +23,7 @@ namespace PolicyAPI.Data.Models
         [Required]
         public double Premium { get; set; }
 
-        public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public Vehicle Vehicle { get; set; } 
         
     }
 }

@@ -23,13 +23,19 @@ namespace PolicyAPI.Test
         [Fact]
         public void Can_add_delete()
         {
-            var policy = new Data.Models.Policy() { EffectiveDate = DateTime.Now + TimeSpan.FromDays(50) };
+            var policy = new Data.Models.Policy() { EffectiveDate = DateTime.Now + TimeSpan.FromDays(50),
+                FirstName = "adam",
+                LastName = "seth",
+                Address = "1 main",
+                DriverLicenseNumber = "at12",
+                ExpirationDate = DateTime.Now + TimeSpan.FromDays(100),
+                Premium = 1.0
+            };
             AddVehicles(policy, 5);
             ctx.Policies.Add(policy);
             ctx.SaveChanges();
 
             policy = ctx.Policies.FirstAsync().GetAwaiter().GetResult();
-            Assert.Equal(5, policy.Vehicles.Count);
             ctx.Policies.Remove(policy);
             ctx.SaveChanges();
         }
@@ -37,7 +43,9 @@ namespace PolicyAPI.Test
         [Fact]
         public async void Effective_date_30_days_in_The_future()
         {
-            var policy = new Data.Models.Policy() { EffectiveDate = DateTime.Now + TimeSpan.FromDays(29) };
+            var policy = new Data.Models.Policy() { EffectiveDate = DateTime.Now + TimeSpan.FromDays(29),
+                FirstName = "adam", LastName="seth", Address="1 main", DriverLicenseNumber="at12", ExpirationDate= DateTime.Now + TimeSpan.FromDays(100), Premium= 1.0
+            };
             AddVehicles(policy, 5);
             var exc = await Assert.ThrowsAsync<PolicyException>(() => _service.AddPolicy(policy));
             Assert.Equal(Reason.ThirtyDays, exc.ErrorCode);            
@@ -48,7 +56,7 @@ namespace PolicyAPI.Test
         {
             var policy = new Data.Models.Policy() { EffectiveDate = DateTime.Now + TimeSpan.FromDays(50) };
             AddVehicles(policy, 1);
-            policy.Vehicles[0].Year = 2000;
+            policy.Vehicle.Year = 2000;
             var exc = await Assert.ThrowsAsync<PolicyException>(() => _service.AddPolicy(policy));
             Assert.Equal(Reason.Classic, exc.ErrorCode);
         }
@@ -56,16 +64,14 @@ namespace PolicyAPI.Test
         private void AddVehicles(Policy p, int cnt)
         {
             Random r = new Random();
-            for (int i = 0; i < cnt; i++)
             {
-                p.Vehicles.Add(new Vehicle()
+                p.Vehicle = new Vehicle()
                 {
-                    AttachedPolicy = p,
                     Manufacturer = Makes[r.Next(Makes.Length)],
                     Model = Models[r.Next(Models.Length)],
-                    VehicleName = $"Car {i}",
+                    VehicleName = $"Car one",
                     Year = Years[r.Next(Years.Length)]
-                });
+                };
             }
         }
     }

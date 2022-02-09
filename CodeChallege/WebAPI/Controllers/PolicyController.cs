@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PolicyAPI.Data;
 using PolicyAPI.Data.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.Extensions;
 
@@ -85,5 +86,14 @@ namespace WebAPI.Controllers
                 return new BadRequestObjectResult(new CustomErrorResponse(ControllerContext));
             }
         }
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CustomErrorResponse), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<List<Policy>>> GetAll(string license, string sortOrder = "None", bool returnExpired = false)
+        {
+            var sortOrdeValr = Enum.Parse<PolicyAPI.Data.Repository.SortOrder>(sortOrder);
+            return await service.GetAll(license, sortOrdeValr, returnExpired);
+        }
+
     }
 }
