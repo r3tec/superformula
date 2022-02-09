@@ -35,7 +35,7 @@ namespace PolicyAPI.Data.Repository
         {
             dbContext.Policies.Add(p);
             var res = await dbContext.SaveChangesAsync();
-            if (res != 1)
+            if (res < 1)
                 return null;
             return dbContext.Policies.Find(p.Id);
         }

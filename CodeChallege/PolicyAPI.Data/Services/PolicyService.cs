@@ -40,6 +40,7 @@ namespace PolicyAPI.Data
                     throw new PolicyException("Vehicle Year should be before 1998") { ErrorCode = Reason.Classic };
             }
 
+
             CheckAddress(p);
 
             CheckStateRegulations(p);
@@ -51,8 +52,8 @@ namespace PolicyAPI.Data
 
         public void CheckAddress(Policy p)
         {
-            if(string.IsNullOrWhiteSpace(p.Address))
-                throw new PolicyException($"Incorrect address format {p.Address}") { ErrorCode = Reason.AddressFormat };
+            if(string.IsNullOrWhiteSpace(p.Address) || !char.IsDigit(p.Address.ToCharArray()[0]))
+                throw new PolicyException($"Incorrect address format: {p.Address}") { ErrorCode = Reason.AddressFormat };
         }
         public void CheckStateRegulations(Policy p)
         {
