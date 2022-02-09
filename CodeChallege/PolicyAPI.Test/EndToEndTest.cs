@@ -43,6 +43,15 @@ namespace PolicyAPI.Test
             Assert.Equal(Reason.ThirtyDays, exc.ErrorCode);            
         }
 
+        [Fact]
+        public void Vehicle_year_before_1998()
+        {
+            var policy = new Data.Models.Policy() { EffectiveDate = DateTime.Now + TimeSpan.FromDays(50) };
+            AddVehicles(policy, 1);
+            policy.Vehicles[0].Year = 2000;
+            var exc = Assert.Throws<PolicyException>(() => _service.AddPolicy(policy));
+            Assert.Equal(Reason.Classic, exc.ErrorCode);
+        }
 
 
         private void AddVehicles(Policy p, int cnt)

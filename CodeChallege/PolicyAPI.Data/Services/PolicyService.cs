@@ -24,6 +24,12 @@ namespace PolicyAPI.Data
             if (period.TotalDays < 30)
                 throw new PolicyException("Effective Date must be at least 30 days in the future from the creation date of the record") { ErrorCode = Reason.ThirtyDays };
 
+            foreach(var v in p.Vehicles)
+            {
+                if (v.Year > 1998)
+                    throw new PolicyException("Vehicle Year should be before 1998") { ErrorCode = Reason.Classic };
+            }
+
             return _repo.Add(p);
         }
     }
