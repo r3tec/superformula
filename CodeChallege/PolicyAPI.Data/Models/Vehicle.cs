@@ -16,6 +16,7 @@ namespace PolicyAPI.Data.Models
         public string Model { get; set; }
         [Required]
         public string Manufacturer { get; set; }
+        [Required]
         public string VehicleName { get; set; }
 
     }

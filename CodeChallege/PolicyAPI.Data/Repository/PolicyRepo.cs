@@ -9,7 +9,7 @@ namespace PolicyAPI.Data.Repository
 {
     public interface IPolicyRepo
     {
-        Task<Policy> GetById(int id);
+        Task<Policy> GetById(long id, string license);
         Task<Policy> Add(Policy p);
         string ConnectionString { get; }
     }
@@ -26,9 +26,10 @@ namespace PolicyAPI.Data.Repository
             dbContext = pc;
         }
 
-        public async Task<Policy> GetById(int id)
+        public async Task<Policy> GetById(long id, string license)
         {
-            return await dbContext.Policies.FindAsync(id);
+            var policy = await dbContext.Policies.FindAsync(id);
+            return policy?.DriverLicenseNumber.Equals(license) == true ? policy : null;
         }
 
         public async Task<Policy> Add(Policy p)
@@ -39,5 +40,6 @@ namespace PolicyAPI.Data.Repository
                 return null;
             return dbContext.Policies.Find(p.Id);
         }
+
     }
 }

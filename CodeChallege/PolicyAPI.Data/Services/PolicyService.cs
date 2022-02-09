@@ -11,6 +11,7 @@ namespace PolicyAPI.Data
     public interface IPolicyService
     {
         Task<Policy> AddPolicy(Policy p);
+        Task<Policy> GetPolicy(long id, string license);
         void CheckStateRegulations(Policy p);
     }
 
@@ -25,6 +26,11 @@ namespace PolicyAPI.Data
         {
             _logger = logger;
             _repo = ctx;
+        }
+
+        public async Task<Policy> GetPolicy(long id, string license)
+        {
+            return await _repo.GetById(id, license);
         }
 
         public async Task<Policy> AddPolicy(Policy p)
@@ -81,11 +87,16 @@ namespace PolicyAPI.Data
 
         private async Task DoNotify(Policy p, string caller)
         {
-            bool result = new Random(DateTime.Now.Second).Next(2) > 0;
-            string msg = $"Notification for caller {caller} " + (result ? "succeeded" : "failed");
-            await Task.Delay(3000);
-            _logger.LogDebug(msg);
-            Console.WriteLine(msg);
+            for (int i = 1; i < 4; i++)
+            {
+                bool result = new Random(DateTime.Now.Second).Next(2) > 0;
+                string msg = $"Notification for caller {caller} " + (result ? "succeeded" : "failed");
+                _logger.LogDebug(msg);
+                Console.WriteLine(msg);
+                if (result)
+                    break;
+                await Task.Delay(3000);
+            }
         }
     }
 }

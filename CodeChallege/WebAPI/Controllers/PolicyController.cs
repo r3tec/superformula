@@ -34,9 +34,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (!dbContext.Database.EnsureCreated())
-                    throw new ApplicationException("no db created");
-
+                dbContext.Database.EnsureCreated();
                 return Ok();
             }
             catch (Exception ex)
@@ -67,5 +65,25 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CustomErrorResponse), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Policy>> Get(long id, string license)
+        {
+            try
+            {
+                var policy = await service.GetPolicy(id, license);
+                if (policy != null)
+                    return policy;
+
+                return NotFound();
+
+            }
+            catch (PolicyException pex)
+            {
+                ModelState.AddModelError("Error", pex.Message);
+                return new BadRequestObjectResult(new CustomErrorResponse(ControllerContext));
+            }
+        }
     }
 }

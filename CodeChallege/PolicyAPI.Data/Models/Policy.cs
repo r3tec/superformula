@@ -20,6 +20,7 @@ namespace PolicyAPI.Data.Models
         public string Address { get; set; }
         [Required]
         public DateTime ExpirationDate { get; set; }
+        [Required]
         public double Premium { get; set; }
 
         public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
