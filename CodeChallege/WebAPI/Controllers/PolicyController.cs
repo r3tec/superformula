@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
+using PolicyAPI.Data;
+using PolicyAPI.Data.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +17,14 @@ namespace WebAPI.Controllers
     public class PolicyController : ControllerBase
     {
         private readonly ILogger<PolicyController> _logger;
-
-        public PolicyController(ILogger<PolicyController> logger)
+        private readonly PolicyContext dbContext;
+        public PolicyController(
+            ILogger<PolicyController> logger,
+            PolicyContext ctx
+            )
         {
             _logger = logger;
+            dbContext = ctx;
         }
 
         [HttpGet("Ping")]
@@ -27,12 +34,9 @@ namespace WebAPI.Controllers
         {
             try
             {
-                //using (SqlConnection conn = await DatabaseAccess.CreateSqlConnection(_databaseSettings.Value.ConnectionString).ConfigureAwait(false))
-                //{
-                //    // just make sure we can retrieve data from the database
-                //    int count = SqlUtils.ExecuteScalar<int>(conn, "SELECT COUNT(*) FROM [dbo].[DocumentTypes]", CommandType.Text);
-                //}
-                throw new Exception("No db yet"); 
+                if (!dbContext.Database.EnsureCreated()) 
+                    throw new ApplicationException("no db created");
+
                 return Ok();
             }
             catch (Exception ex)
@@ -42,6 +46,7 @@ namespace WebAPI.Controllers
                 return new BadRequestObjectResult(new CustomErrorResponse(ControllerContext));
             }
         }
+
 
     }
 }
