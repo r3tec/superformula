@@ -9,8 +9,8 @@ namespace PolicyAPI.Data.Repository
 {
     public interface IPolicyRepo
     {
-        Policy GetById(int id);
-        long Add(Policy p);
+        Task<Policy> GetById(int id);
+        Task<Policy> Add(Policy p);
         string ConnectionString { get; }
     }
 
@@ -26,16 +26,18 @@ namespace PolicyAPI.Data.Repository
             dbContext = pc;
         }
 
-        public Policy GetById(int id)
+        public async Task<Policy> GetById(int id)
         {
-            return dbContext.Policies.Where(p => p.Id == id).FirstOrDefault();
+            return await dbContext.Policies.FindAsync(id);
         }
 
-        public long Add(Policy p)
+        public async Task<Policy> Add(Policy p)
         {
             dbContext.Policies.Add(p);
-            dbContext.SaveChanges();
-            return p.Id;
+            var res = await dbContext.SaveChangesAsync();
+            if (res != 1)
+                return null;
+            return dbContext.Policies.Find(p.Id);
         }
     }
 }

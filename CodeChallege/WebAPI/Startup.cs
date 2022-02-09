@@ -30,6 +30,7 @@ namespace WebAPI
         {
             services.AddTransient<PolicyContext>();
             services.AddTransient<IPolicyRepo, PolicyRepo>();
+            services.AddTransient<IPolicyService, PolicyService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

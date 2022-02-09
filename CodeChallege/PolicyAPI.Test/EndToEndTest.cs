@@ -35,24 +35,23 @@ namespace PolicyAPI.Test
         }
 
         [Fact]
-        public void Effective_date_30_days_in_The_future()
+        public async void Effective_date_30_days_in_The_future()
         {
             var policy = new Data.Models.Policy() { EffectiveDate = DateTime.Now + TimeSpan.FromDays(29) };
             AddVehicles(policy, 5);
-            var exc = Assert.Throws<PolicyException>(() => _service.AddPolicy(policy));
+            var exc = await Assert.ThrowsAsync<PolicyException>(() => _service.AddPolicy(policy));
             Assert.Equal(Reason.ThirtyDays, exc.ErrorCode);            
         }
 
         [Fact]
-        public void Vehicle_year_before_1998()
+        public async void Vehicle_year_before_1998()
         {
             var policy = new Data.Models.Policy() { EffectiveDate = DateTime.Now + TimeSpan.FromDays(50) };
             AddVehicles(policy, 1);
             policy.Vehicles[0].Year = 2000;
-            var exc = Assert.Throws<PolicyException>(() => _service.AddPolicy(policy));
+            var exc = await Assert.ThrowsAsync<PolicyException>(() => _service.AddPolicy(policy));
             Assert.Equal(Reason.Classic, exc.ErrorCode);
         }
-
 
         private void AddVehicles(Policy p, int cnt)
         {
