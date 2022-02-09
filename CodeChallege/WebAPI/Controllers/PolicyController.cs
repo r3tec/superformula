@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using PolicyAPI.Data;
-using PolicyAPI.Data.Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Extensions;
 

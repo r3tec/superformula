@@ -17,6 +17,7 @@ namespace PolicyAPI.Data
         }
 
         public DbSet<Policy> Policies { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

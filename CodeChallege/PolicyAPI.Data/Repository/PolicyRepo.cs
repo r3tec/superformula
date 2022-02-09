@@ -10,6 +10,7 @@ namespace PolicyAPI.Data.Repository
     public interface IPolicyRepo
     {
         Policy GetById(int id);
+        long Add(Policy p);
         string ConnectionString { get; }
     }
 
@@ -27,8 +28,14 @@ namespace PolicyAPI.Data.Repository
 
         public Policy GetById(int id)
         {
-            dbContext.Policies.Find(1);
-            return new Policy() { Id = 1 };
+            return dbContext.Policies.Where(p => p.Id == id).FirstOrDefault();
+        }
+
+        public long Add(Policy p)
+        {
+            dbContext.Policies.Add(p);
+            dbContext.SaveChanges();
+            return p.Id;
         }
     }
 }
