@@ -1,3 +1,5 @@
-# superformula
+## The API comes with postman collecton. Exported collection is in the root folder of the project
 
-Actual readme at https://github.com/r3tec/superformula/blob/main/CodeChallege/readme.md
+Please run Ping method to initilaize the db before running any other methods.
+
+
