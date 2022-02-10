@@ -13,7 +13,6 @@ namespace PolicyAPI.Data
         Task<Policy> AddPolicy(Policy p);
         Task<Policy> GetPolicy(long id, string license);
         Task<List<Policy>> GetAll(string license, SortOrder sortOrder, bool returnExpired);
-        void CheckStateRegulations(Policy p);
     }
 
     public class PolicyService : IPolicyService
@@ -41,41 +40,52 @@ namespace PolicyAPI.Data
 
         public async Task<Policy> AddPolicy(Policy p)
         {
-
-            var period = p.EffectiveDate - DateTime.Now;
-            if (period.TotalDays < 30)
-                throw new PolicyException("Effective Date must be at least 30 days in the future from the creation date of the record") { ErrorCode = Reason.ThirtyDays };
-
-             if (p.Vehicle.Year > 1998)
-                    throw new PolicyException("Vehicle Year should be before 1998") { ErrorCode = Reason.Classic };
-
-
-            CheckAddress(p);
-
-            CheckStateRegulations(p);
+            ValidatePolicy(p);
             var newPolicy = await _repo.Add(p);
             if (newPolicy != null)
                 NotifyCreate(newPolicy);
             return newPolicy;
         }
 
-        public void CheckAddress(Policy p)
+        private void CheckAddress(Policy p)
         {
             if(string.IsNullOrWhiteSpace(p.Address) || !char.IsDigit(p.Address.ToCharArray()[0]))
                 throw new PolicyException($"Incorrect address format: {p.Address}") { ErrorCode = Reason.AddressFormat };
         }
-        public void CheckStateRegulations(Policy p)
+        private bool CheckStateRegulations(Policy p, out string error)
         {
+            error = "";
             Random r = new Random();
             switch (r.Next(3))
             {
                 case 0:
-                    throw new PolicyException("State Regulations do not allow this policy to be created") { ErrorCode = Reason.StateUnhappy };
+                    error = "State Regulations do not allow this policy to be created";
+                    return false;
                 default:
-                    return;
+                    return true;
             }
         }
 
+        private void ValidatePolicy(Policy p)
+        {
+            var period = p.EffectiveDate - DateTime.Now;
+            if (period.TotalDays < 30)
+                throw new PolicyException("Effective Date must be at least 30 days in the future from the creation date of the record") { ErrorCode = Reason.ThirtyDays };
+
+            if (p.Vehicle.Year > 1998)
+                throw new PolicyException("Vehicle Year should be before 1998") { ErrorCode = Reason.Classic };
+            // some reasonable validation for effecftive date
+            if ((p.ExpirationDate - p.EffectiveDate).TotalDays < 30)
+                throw new PolicyException("Expiration Date must be at least 30 days after effective date") { ErrorCode = Reason.ExpireDate };
+            // premium
+            if (p.Premium < 1.0 || p.Premium > 100000.0)
+                throw new PolicyException($"Policy premium value {p.Premium} is not valid");
+
+            CheckAddress(p);
+
+            if (!CheckStateRegulations(p, out string error))
+                throw new PolicyException(error) { ErrorCode = Reason.StateUnhappy };
+        }
         private async void NotifyCreate(Policy p)
         {
             List<Task> notifyTasks = new List<Task>();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PolicyAPI.Data
 {
-    public enum Reason { General, ThirtyDays, Classic, AddressFormat, StateUnhappy}
+    public enum Reason { General, ThirtyDays, Classic, AddressFormat, StateUnhappy, ExpireDate, Premium}
     public class PolicyException : ApplicationException
     {
         public PolicyException(string msg) : base(msg) { }

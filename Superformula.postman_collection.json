@@ -26,13 +26,71 @@
 			"response": []
 		},
 		{
+			"name": "Wrong expiration date",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"effectiveDate\" : \"2022-05-05\",\r\n    \"address\" : \"1 main\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"expirationDate\": \"2022-05-01\",\r\n    \"lastName\": \"Parker\",\r\n    \"firstName\": \"Charlie\",\r\n     \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1984\r\n        }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/Policy/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"Policy",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Successful create",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"effectiveDate\" : \"2022-05-05\",\r\n    \"address\" : \"1 main\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"expirationDate\": \"2031-01-01T00:00:00\",\r\n    \"lastName\": \"Parker\",\r\n    \"firstName\": \"Charlie\",\r\n     \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1984\r\n        }\r\n}",
+					"raw": "{\r\n    \"effectiveDate\" : \"2022-05-05\",\r\n    \"address\" : \"1 main\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"expirationDate\": \"2031-01-01T00:00:00\",\r\n    \"lastName\": \"Parker\",\r\n    \"firstName\": \"Charlie\",\r\n     \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1984\r\n        },\r\n        \"premium\": 25.5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/Policy/Create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"Policy",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bad premium",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"effectiveDate\" : \"2022-05-05\",\r\n    \"address\" : \"1 main\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"expirationDate\": \"2031-01-01T00:00:00\",\r\n    \"lastName\": \"Parker\",\r\n    \"firstName\": \"Charlie\",\r\n     \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1984\r\n        },\r\n        \"premium\":0.0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -61,7 +119,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"effectiveDate\": \"2022-05-05T00:00:00\",\r\n    \"firstName\": \"Charlie\",\r\n    \"lastName\": \"Parker\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"address\": \"1 main\",\r\n    \"expirationDate\": \"0001-01-01T00:00:00\",\r\n    \"premium\": 0,\r\n  \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1999\r\n        }\r\n}",
+					"raw": "{\r\n    \"effectiveDate\": \"2022-05-05T00:00:00\",\r\n    \"firstName\": \"Charlie\",\r\n    \"lastName\": \"Parker\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"address\": \"1 main\",\r\n    \"expirationDate\": \"2031-01-01T00:00:00\",\r\n    \"premium\": 20,\r\n    \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1999\r\n        }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -90,7 +148,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"effectiveDate\" : \"2022-05-05\",\r\n    \"address\" : \"    \",\r\n    \"driverLicenseNumber\": \"123abc\"\r\n\r\n}",
+					"raw": "{\r\n    \"effectiveDate\" : \"2022-05-05\",\r\n    \"address\" : \"    \",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"expirationDate\": \"2031-01-01T00:00:00\",\r\n    \"premium\": 20,\r\n    \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1996\r\n        }    \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -119,7 +177,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"effectiveDate\" : \"2022-05-05\",\r\n    \"address\" : \"myHome\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"lastName\": \"Parker\",\r\n    \"firstName\": \"Charlie\",\r\n     \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1996\r\n        }    \r\n}",
+					"raw": "{\r\n    \"effectiveDate\" : \"2022-05-05\",\r\n    \"address\" : \"myHome\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"lastName\": \"Parker\",\r\n    \"firstName\": \"Charlie\",\r\n    \"expirationDate\": \"2031-01-01T00:00:00\",\r\n    \"premium\": 20,\r\n    \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1996\r\n        }    \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -148,7 +206,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"effectiveDate\" : \"2022-03-05\",\r\n    \"address\" : \"1 myHome\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"lastName\": \"Parker\",\r\n    \"firstName\": \"Charlie\"\r\n}",
+					"raw": "{\r\n    \"effectiveDate\" : \"2022-03-05\",\r\n    \"address\" : \"1 myHome\",\r\n    \"driverLicenseNumber\": \"123abc\",\r\n    \"lastName\": \"Parker\",\r\n    \"firstName\": \"Charlie\",\r\n    \"expirationDate\": \"2031-01-01T00:00:00\",\r\n    \"premium\": 20,\r\n    \"vehicle\":\r\n        {\r\n            \"manufacturer\":\"dmv\",\r\n            \"model\": \"bandage\",\r\n            \"vehicleName\": \"Bonnie\",\r\n            \"year\":1996\r\n        }    \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

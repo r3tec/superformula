@@ -22,7 +22,7 @@ namespace PolicyAPI.Data.Models
         public DateTime ExpirationDate { get; set; }
         [Required]
         public double Premium { get; set; }
-
+        [Required]
         public Vehicle Vehicle { get; set; } 
         
     }
